@@ -1,4 +1,4 @@
-# 🛡️ SEBA Shield AI
+#  SEBA Shield 
 
 ### Secure • Educate • Block • Analyze
 
@@ -10,7 +10,7 @@ SEBA Shield AI is a cybersecurity-focused mobile application designed to help us
 
 The application provides intelligent scam detection for suspicious messages, phishing links, and fraudulent job offers while educating users about common cyber threats through explainable risk analysis.
 
-Built using React Native and Firebase, SEBA Shield AI is a cross-platform application that runs on both Android and iOS devices.
+Built using React Native and Firebase, SEBA Shield  is a cross-platform application that runs on both Android and iOS devices.
 
 
 ##  Project Objectives
@@ -38,7 +38,7 @@ Cybercriminals increasingly use:
 
 Many users cannot easily determine whether a message or link is legitimate.
 
-SEBA Shield AI helps users evaluate potential threats and understand why content may be dangerous before taking action.
+SEBA Shield  helps users evaluate potential threats and understand why content may be dangerous before taking action.
 
 
 
@@ -103,7 +103,8 @@ Store previous analyses using Firebase Firestore.
 | React Navigation | Navigation system                 |
 | GitHub           | Version control                   |
 | Xcode            | iOS Simulator                     |
-| Android Studio   | Android Emulator                  |
+| Android Studio 
+| VScode                  |
 
 
 
@@ -220,7 +221,8 @@ Mobile Capstone Project
 
 This project is developed for educational purposes as part of a Mobile Capstone Project.
 
-SEBAShieldAI/
+Detailed Scaffolding 
+SEBAShield/
 │
 ├── app/
 │   ├── screens/
@@ -285,41 +287,3 @@ SEBAShieldAI/
 ├── .gitignore
 └── LICENSE
 
-mkdir -p app/screens app/components app/constants
-mkdir -p navigation firebase services utils styles context docs
-mkdir -p assets/images assets/icons assets/fonts
-
-touch app/screens/HomeScreen.js
-touch app/screens/ScannerScreen.js
-touch app/screens/ResultScreen.js
-touch app/screens/LinkCheckerScreen.js
-touch app/screens/FakeJobScreen.js
-touch app/screens/HistoryScreen.js
-touch app/screens/SettingsScreen.js
-
-touch app/components/Header.js
-touch app/components/CustomButton.js
-touch app/components/ScanInput.js
-touch app/components/RiskCard.js
-touch app/components/ThreatIndicator.js
-
-touch app/constants/colors.js
-touch app/constants/typography.js
-touch app/constants/appConfig.js
-
-touch navigation/AppNavigator.js
-touch firebase/firebaseConfig.js
-
-touch services/scamAnalyzer.js
-touch services/linkChecker.js
-touch services/firebaseService.js
-
-touch utils/scoringSystem.js
-touch utils/threatPatterns.js
-touch utils/helperFunctions.js
-
-touch styles/globalStyles.js
-touch context/ScanContext.js
-
-touch docs/Wireframes.md
-touch docs/Architecture.md
