@@ -15,7 +15,7 @@ Built using React Native and Firebase, SEBA Shield  is a cross-platform applicat
 
 ##  Project Objectives
 
-The primary objectives of SEBA Shield AI are to:
+The primary objectives of SEBA Shield are to:
 
 * Detect suspicious messages and scam attempts
 * Analyze phishing URLs and unsafe websites
