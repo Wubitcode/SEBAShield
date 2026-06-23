@@ -209,8 +209,9 @@ This project strengthens skills in:
 
 **Wubit Eco**
 
+Mobile Web developer student !
 Computer Networking & Cybersecurity Engineering Graduate
-Mobile Web developer student 
+
 
 Mobile Capstone Project
 
