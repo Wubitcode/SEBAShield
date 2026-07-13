@@ -1,229 +1,163 @@
-#  SEBA Shield 
+# 🛡️ SEBAShield
 
 ### Secure • Educate • Block • Analyze
 
-**Protect. Detect. Educate.**
+**Protect • Detect • Educate**
 
 ## 📱 Mobile Capstone Project
 
-SEBA Shield AI is a cybersecurity-focused mobile application designed to help users identify, analyze, and understand online scams before they become victims.
+**SEBAShield** is a cross-platform cybersecurity mobile application designed to help users identify, analyze, and understand suspicious online content before financial or personal harm occurs.
 
-The application provides intelligent scam detection for suspicious messages, phishing links, and fraudulent job offers while educating users about common cyber threats through explainable risk analysis.
+The application currently provides rule-based scam detection for suspicious messages by examining common indicators such as urgency, credential requests, financial requests, suspicious links, fake employment language, and emotional pressure tactics.
 
-Built using React Native and Firebase, SEBA Shield  is a cross-platform application that runs on both Android and iOS devices.
+SEBAShield is being developed with **React Native** and **Expo** for both iOS and Android. Firebase and Firestore integration are planned for later phases of the project.
 
 
-##  Project Objectives
+# Project Objectives
 
-The primary objectives of SEBA Shield are to:
+The primary objectives of SEBAShield are to:
 
-* Detect suspicious messages and scam attempts
-* Analyze phishing URLs and unsafe websites
-* Identify fake job offer scams
-* Provide understandable threat explanations
-* Increase cybersecurity awareness
+* Detect suspicious messages and common scam attempts
+* Analyze phishing links and unsafe domains
+* Identify fraudulent job offers
+* Calculate an understandable threat score
+* Classify content as Safe, Suspicious, or High Risk
+* Explain why submitted content may be dangerous
+* Improve cybersecurity awareness
 * Help users make safer online decisions
 
 
-##  Problems Being Solved
 
-Cybercriminals increasingly use:
+# Problem Being Solved
+
+Cybercriminals commonly use:
 
 * Phishing emails
 * Scam text messages
 * Fake job offers
-* Credential harvesting attacks
 * Malicious websites
+* Credential-harvesting messages
+* Financial manipulation
+* Identity impersonation
 * Social engineering tactics
 
 Many users cannot easily determine whether a message or link is legitimate.
 
-SEBA Shield  helps users evaluate potential threats and understand why content may be dangerous before taking action.
+SEBAShield addresses this problem by analyzing submitted content, identifying recognizable scam indicators, assigning a threat score, and presenting the findings in clear language.
 
+✅ Current Features
 
+# Message Scanner
 
-##  Core Features
-
-### Message Scanner
-
-Analyze suspicious:
+Users can enter or paste suspicious content such as:
 
 * SMS messages
 * Emails
 * Social media messages
-* Online advertisements
+* Job offers
+* General scam messages
 
-### Link Safety Checker
+### Rule-Based Scam Analyzer
 
-Evaluate:
+The current detection engine checks content against organized threat-pattern categories.
 
-* URLs
-* Websites
-* Suspicious domains
+# Threat Scoring System
 
-### Fake Job Detector
+The application calculates a score between `0` and `100`.
 
-Identify:
+| Score  | Classification |
+| ------ | -------------- |
+| 0–29   | 🟢 Safe        |
+| 30–69  | 🟡 Suspicious  |
+| 70–100 | 🔴 High Risk   |
 
-* Employment scams
-* Unrealistic job offers
-* Requests for sensitive information
+# Explainable Threat Results
 
-### Threat Scoring
+The Result Screen displays:
 
-Risk classifications:
+* Threat score
+* Risk classification
+* Detected scam indicators
+* Original submitted message
 
-* 🟢 Safe
-* 🟡 Suspicious
-* 🔴 High Risk
+# Input Validation
 
-### Explainable Results
+The application prevents users from submitting an empty message for analysis.
 
-Displays:
+# Cross-Platform Navigation
 
-* Threat indicators
-* Scam patterns detected
-* Risk explanations
-* Cybersecurity recommendations
-
-### Scan History
-
-Store previous analyses using Firebase Firestore.
+React Navigation manages movement between the Home, Scanner, and Result screens.
 
 
-## Technology Stack
+# Current Threat-Detection Categories
 
-| Technology       | Purpose                           |
-| ---------------- | --------------------------------- |
-| React Native     | Cross-platform mobile development |
-| Expo             | Development and testing           |
-| Firebase         | Backend services                  |
-| Firestore        | Data storage                      |
-| JavaScript       | Application logic                 |
-| React Navigation | Navigation system                 |
-| GitHub           | Version control                   |
-| Xcode            | iOS Simulator                     |
-| Android Studio 
-| VScode                  |
-
-
-
-## Project Structure
-
-
-SEBAShieldAI/
-│
-├── app/
-│   ├── screens/
-│   ├── components/
-│   └── constants/
-│
-├── navigation/
-├── firebase/
-├── services/
-├── utils/
-├── styles/
-├── context/
-├── docs/
-├── assets/
-│
-├── App.js
-├── package.json
-├── README.md
-└── AIReflection.md
-
-
-## Planned Screens
-
-### Home Screen
-
-Application dashboard and navigation hub.
-
-### Scanner Screen
-
-Paste and analyze suspicious messages.
-
-### Result Screen
-
-Display risk score and threat indicators.
-
-### Link Checker Screen
-
-Analyze URLs and suspicious domains.
-
-### Fake Job Detector
-
-Analyze employment offers for scam patterns.
-
-### History Screen
-
-Review previous scans.
-
-### Settings Screen
-
-Manage application preferences.
-
-
-## 🔐 Threat Detection Categories
-
-The application will analyze:
+The application currently analyzes content for:
 
 * Urgency language
-* Suspicious URLs
-* Requests for money
-* Requests for personal information
-* Credential theft attempts
-* Identity impersonation
-* Fake employment offers
-* Social engineering tactics
+* Credential requests
+* Banking and financial requests
+* Suspicious links
+* Shortened URL patterns
+* Unusual domain extensions
+* Fake employment language
+* Unrealistic income claims
+* Emotional pressure
+* Prize and reward manipulation
+* Account suspension or verification language
+
+
+# Detection Workflow
+
+
+User submits a suspicious message
+                │
+                ▼
+        ScannerScreen.js
+                │
+                ▼
+        scamAnalyzer.js
+                │
+       ┌────────┼────────┐
+       ▼        ▼        ▼
+Threat patterns     Scoring rules
+       │                 │
+       └────────┬────────┘
+                ▼
+     Risk score and classification
+                │
+                ▼
+         ResultScreen.js
+
+
+# Technology Stack
+
+| Technology       | Purpose                                     |
+|                  | ------------------------------------------- |
+| React Native     | Cross-platform mobile development           |
+| Expo             | Development, testing, and simulator support |
+| JavaScript       | Application and detection logic             |
+| React Navigation | Screen navigation                           |
+| Xcode            | iOS Simulator testing                       |
+| Android Studio   | Planned Android emulator testing            |
+| Firebase         | Planned backend services                    |
+| Firestore        | Planned scan-history storage                |
+| Git and GitHub   | Version control and project management      |
 
 
 
-##  Future Enhancements
-
-Planned future features include:
-
-* OCR screenshot analysis
-* QR code scanning
-* Scam phone number reporting
-* AI-powered threat explanations
-* Community threat reporting
-* Real-time URL reputation checking
-* Cybersecurity learning center
+## 📂 Project Structure
 
 
-##  Learning Outcomes
-
-This project strengthens skills in:
-
-* Mobile Application Development
-* React Native
-* Firebase Integration
-* Cybersecurity Analysis
-* UI/UX Design
-* Secure Software Development
-* GitHub Project Management
-
-
-## 👩‍💻 Author
-
-**Wubit Eco**
-
-Mobile Web developer student !
-Computer Networking & Cybersecurity Engineering Graduate
-
-
-Mobile Capstone Project
-
-2026
-
-
-##  License
-
-This project is developed for educational purposes as part of a Mobile Capstone Project.
-
-Detailed Scaffolding 
 SEBAShield/
+│
+├── App.js
+├── app.json
+├── index.js
+├── package.json
+├── package-lock.json
+├── README.md
+├── AIReflection.md
+├── .gitignore
 │
 ├── app/
 │   ├── screens/
@@ -250,9 +184,6 @@ SEBAShield/
 ├── navigation/
 │   └── AppNavigator.js
 │
-├── firebase/
-│   └── firebaseConfig.js
-│
 ├── services/
 │   ├── scamAnalyzer.js
 │   ├── linkChecker.js
@@ -263,28 +194,203 @@ SEBAShield/
 │   ├── threatPatterns.js
 │   └── helperFunctions.js
 │
-├── styles/
-│   └── globalStyles.js
+├── firebase/
+│   └── firebaseConfig.js
 │
 ├── context/
 │   └── ScanContext.js
+│
+├── styles/
+│   └── globalStyles.js
 │
 ├── docs/
 │   ├── Wireframes.md
 │   └── Architecture.md
 │
-├── assets/
-│   ├── images/
-│   ├── icons/
-│   └── fonts/
-│
-├── App.js
-├── app.json
-├── index.js
-├── package.json
-├── package-lock.json
-├── README.md
-├── AIReflection.md
-├── .gitignore
-└── LICENSE
+└── assets/
+    ├── images/
+    │   └── sebashield-logo.png
+    ├── icons/
+    └── fonts/
 
+
+Some files are currently placeholders and will be implemented during later development phases.
+
+
+# Application Screens
+
+# Home Screen
+
+The primary dashboard that displays the SEBAShield brand and provides access to application features.
+
+# Scanner Screen
+
+Allows users to enter or paste suspicious messages for analysis.
+
+# Result Screen
+
+Displays the calculated threat score, risk classification, detected indicators, and submitted message.
+
+# Link Checker Screen
+
+Planned feature for evaluating suspicious URLs and domains.
+
+# Fake Job Detector Screen
+
+Planned feature for detecting employment and recruitment scams.
+
+# History Screen
+
+Planned feature for reviewing previous analyses stored with Firebase Firestore.
+
+# Settings Screen
+
+Planned feature for managing application preferences.
+
+# Running the Project
+
+# Prerequisites
+
+Install the following:
+
+* Node.js
+* npm
+* Expo
+* Xcode for iOS testing
+* Android Studio for Android testing
+
+#Install Dependencies
+
+bash
+npm install
+
+
+# Start Expo
+
+bash
+npx expo start
+
+
+# Start with a Cleared Cache
+
+bash
+npx expo start -c
+
+
+# Open the iOS Simulator
+
+After Expo starts, press:
+
+text
+i
+
+
+# Run with the npm Script
+
+bash
+npm run ios
+
+
+# Test Messages
+
+### High-Risk Test
+
+text
+URGENT: Your bank account has been suspended. Click http://secure-bank-login.com immediately to verify your identity, password, and verification code.
+
+
+Expected result:
+
+* High threat score
+* High Risk classification
+* Urgency indicator
+* Suspicious-link indicator
+* Credential-request indicator
+* Financial-scam indicator
+
+# Safe Test
+
+text
+Hello, this is a reminder that your appointment is scheduled for Friday at 2:00 PM. Please call the office if you need to reschedule.
+
+
+Expected result:
+
+* Low threat score
+* Safe classification
+* No major scam indicators
+
+
+## 🗓️ Development Roadmap
+
+| Week   | Milestone                                           | Status     |
+| ------ | --------------------------------------------------- | ---------- |
+| Week 1 | Project Architecture and Detailed Scaffolding       | ✅ Complete |
+| Week 2 | Core Scam Detection Engine                          | ✅ Complete |
+| Week 3 | Advanced Link Checker                               | ⏳ Next     |
+| Week 4 | Fake Job Detector                                   | Planned    |
+| Week 5 | Firebase and Scan History                           | Planned    |
+| Week 6 | AI-Assisted Scam Analysis                           | Planned    |
+| Week 7 | Testing, UI Polish, Documentation, and Presentation | Planned    |
+
+
+
+##  Future Enhancements
+
+Planned future capabilities include:
+
+* Advanced URL analysis
+* Real-time URL-reputation services
+* Fake job detection
+* Firebase authentication
+* Firestore scan history
+* OCR screenshot analysis
+* QR code scanning
+* Scam phone-number reporting
+* Community threat reporting
+* AI-assisted threat explanations
+* Personalized cybersecurity recommendations
+* Cybersecurity education center
+
+
+## 🎓 Learning Outcomes
+
+This project strengthens practical skills in:
+
+* React Native development
+* Cross-platform mobile application design
+* JavaScript
+* React Navigation
+* Modular software architecture
+* Rule-based detection systems
+* Cybersecurity analysis
+* User-interface design
+* Git and GitHub
+* Testing and debugging
+* Firebase integration
+
+
+
+## ⚠️ Disclaimer
+
+SEBAShield is an educational mobile capstone project and an early-stage prototype.
+
+The application provides risk indicators based on rule-based pattern matching. It should not be treated as a guaranteed determination that content is safe or malicious. Users should independently verify suspicious communications and avoid sharing sensitive personal or financial information.
+
+# 👩‍💻 Author
+
+Wubit 
+
+Mobile and Web Development using AI Student
+Computer Networking and Cybersecurity Engineering Graduate
+
+
+Project:SEBAShield Mobile Capstone
+Year: 2026
+
+
+
+## 📄 License
+
+This project is currently developed for educational and portfolio purposes as part of a Mobile Capstone Project.
+Mobile and Web Development using AI Student
