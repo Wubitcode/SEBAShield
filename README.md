@@ -90,14 +90,21 @@ SEBAShield/
         ├── styles/
         └── utils/
 See src/README.md for architecture details.
+
 Privacy and Data Handling
+
 SEBAShield intentionally separates rich local scan data from reduced cloud metadata.
+
 Local history
+
 The device-local history can contain the submitted message, URL, or job text and the complete local analysis required by the UI.
 Local history is encrypted before persistence using AES-256-GCM. The local encryption key is stored separately with Expo SecureStore. Android application backup is disabled.
+
 Firestore
+
 Firestore stores a reduced representation of a scan rather than the complete local scan record.
 The cloud record is designed to contain fields such as:
+
 •	scan ID
 •	Firebase owner UID
 •	scan type
@@ -106,16 +113,23 @@ The cloud record is designed to contain fields such as:
 •	normalized indicator codes
 •	analyzer/schema version
 •	timestamps
+
 The cloud representation intentionally excludes raw submitted content, local content previews, free-text recommendations, free-text indicator descriptions, AI summaries, AI explanations, and local encryption material.
+
 Cloud history recovery
+
 When an email-account user signs out, the device-local raw scan history is cleared.
 When the user signs back into the same Firebase account, SEBAShield can retrieve that account's Firestore metadata and display metadata-only Cloud Record entries.
 Raw submitted content is not reconstructed from Firestore.
+
 AI analysis
+
 When optional AI analysis is requested, the submitted content is transmitted to the configured authenticated AI backend for that inference request.
 SEBAShield does not intentionally persist raw submitted content or raw AI request content in Firestore.
 For a more detailed engineering description, see docs/PrivacyModel.md.
+
 Authentication
+
 Supported Firebase Authentication workflows include:
 •	anonymous authentication
 •	email/password account creation
@@ -124,9 +138,13 @@ Supported Firebase Authentication workflows include:
 •	email verification
 •	password reset
 •	sign-out
+
 Cloud scan ownership is based on the authenticated Firebase UID.
+
 History Deletion
+
 SEBAShield uses a cloud-first deletion strategy when authentication is available.
+
 For an individual scan:
 1.	Verify the current Firebase identity.
 2.	Delete the matching Firestore scan document.
@@ -139,7 +157,9 @@ For Clear Scan History:
 4.	Clear encrypted local history and its local key.
 5.	Reset in-memory history state.
 This prevents the app from reporting permanent deletion while a cloud record is known to remain.
+
 Environment Configuration
+
 Copy .env.example to a local .env file and provide the required environment values. Never commit the populated .env file.
 Do not commit:
 •	.env
@@ -148,7 +168,9 @@ Do not commit:
 •	Cloudflare secrets
 •	private credentials or tokens
 Client-side Firebase web configuration is not treated as an authorization mechanism. Access control depends on Firebase Authentication and Firestore Security Rules.
+
 Run the Mobile App
+
 npm install
 npx expo start -c
 
@@ -156,13 +178,18 @@ Export Validation Checks
 
 npx expo export --platform ios --output-dir /tmp/sebashield-ios-final
 npx expo export --platform android --output-dir /tmp/sebashield-android-final
+
 AI Backend Validation
 Run backend checks from the backend directory:
+
 cd ai-backend
 npx tsc --noEmit
 npm test -- --run
+
 The backend tests cover health and important request-rejection behavior. Additional integration and security tests remain appropriate future work.
+
 Security Notes
+
 Current defensive controls include:
 •	encrypted local history
 •	SecureStore key storage
@@ -176,11 +203,15 @@ Current defensive controls include:
 •	no-store response headers for AI responses
 •	cloud-first deletion behavior
 These controls are engineering safeguards, not a formal security certification or guarantee.
+
 Limitations
+
 SEBAShield is a capstone application.
 A Safe or low-risk result does not prove that content is trustworthy. Automated and AI-assisted results can be incomplete or incorrect.
 Users should independently verify suspicious links, employers, payment requests, account-security messages, and other high-impact situations.
+
 Documentation
+
 •	docs/FirebaseStructure.md — Firestore structure, ownership, synchronization, and deletion
 •	docs/PrivacyModel.md — local/cloud/AI data flows and retention
 •	docs/Roadmap.md — implemented scope and future work
