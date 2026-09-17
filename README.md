@@ -1,8 +1,12 @@
 SEBAShield
+
 Detect. Analyze. Protect. Educate.
+
 SEBAShield is a React Native + Expo mobile cybersecurity application for analyzing suspicious messages, links, and job offers. The app runs natively both  on iOS and Android from a single React Native codebase.
 The app combines deterministic local analysis with optional AI-assisted analysis. The local rules engine remains the primary baseline; AI provides supplemental context and does not replace the local result.
+
 Features
+
 •	Message scam analysis
 •	Link / URL checking
 •	Fake-job detection
@@ -18,7 +22,9 @@ Features
 •	Individual scan deletion
 •	Clear-all scan history
 •	Settings and account-management controls
+
 Technology
+
 Mobile application
 •	React Native
 •	Expo
@@ -28,14 +34,18 @@ Mobile application
 •	Cloud Firestore
 •	Expo SecureStore
 •	Expo Crypto
+
 AI backend
+
 •	Cloudflare Workers
 •	Workers AI
 •	TypeScript
 •	Vitest
 •	Firebase ID-token verification
 •	User and network rate limiting
+
 Architecture
+
 SEBAShield uses a feature-oriented structure.
 SEBAShield/
 ├── App.js
