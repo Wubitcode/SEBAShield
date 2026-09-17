@@ -1,33 +1,16 @@
 /**
- * ============================================================
- * SEBAShield
- * Application Entry Point
- * ============================================================
- *
- * Purpose:
- * This file serves as the root entry point for the
- * entire SEBAShield mobile application.
- *
- * Responsibilities:
- * - Launch the application.
- * - Load the navigation system.
- * - Initialize all screens.
- *
- * Why We Use It:
- * React Native applications require a root component.
- * App.js acts as the starting point loaded by Expo.
- *
- * Author: Wubit
- * Project: Mobile Capstone Project
- * Technology: React Native + Expo
- * ============================================================
+ * SEBAShield Main Application Component
  */
 
-import AppNavigator from "./navigation/AppNavigator";
+import React from "react";
 
-/**
- * Root Application Component
- */
+import AppNavigator from "./src/app/navigation/AppNavigator";
+import AppProviders from "./src/app/providers/AppProviders";
+
 export default function App() {
-  return <AppNavigator />;
+  return (
+    <AppProviders>
+      <AppNavigator />
+    </AppProviders>
+  );
 }

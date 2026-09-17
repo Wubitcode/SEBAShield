@@ -1,0 +1,92 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+
+  "name": "ai-backend",
+
+  "main": "src/index.ts",
+
+  "compatibility_date": "2026-08-25",
+
+  /**
+   * Privacy-first configuration.
+   *
+   * Persistent Worker observability remains disabled because
+   * SEBAShield processes potentially sensitive scam content.
+   */
+  "observability": {
+    "enabled": false
+  },
+
+  /**
+   * Source maps are not uploaded for the initial deployment.
+   */
+  "upload_source_maps": false,
+
+  /**
+   * Public application configuration.
+   *
+   * A Firebase project ID is an identifier, not a secret.
+   * The Worker uses it when validating Firebase ID tokens.
+   */
+  "vars": {
+    "FIREBASE_PROJECT_ID": "sebashield-c67b9"
+  },
+
+  /**
+   * Cloudflare Workers AI binding.
+   *
+   * AI inference is available through env.AI.
+   * No AI credential is placed in the mobile application.
+   */
+  "ai": {
+    "binding": "AI"
+  },
+
+  /**
+   * ============================================================
+   * AI Abuse Protection
+   * ============================================================
+   *
+   * AI_RATE_LIMITER
+   * ----------------
+   * Primary limiter.
+   *
+   * Uses the VERIFIED Firebase UID.
+   * Each authenticated identity receives a maximum of:
+   *
+   * 10 AI requests per 60 seconds.
+   *
+   *
+   * AI_NETWORK_RATE_LIMITER
+   * ------------------------
+   * Secondary coarse abuse limiter.
+   *
+   * Uses Cloudflare's observed client network address.
+   *
+   * This threshold is intentionally much higher than the
+   * per-user limit because multiple legitimate users can share
+   * one home, workplace, school, carrier, or NAT address.
+   *
+   * Its purpose is only to reduce abuse from repeatedly creating
+   * new anonymous Firebase identities.
+   */
+  "ratelimits": [
+    {
+      "name": "AI_RATE_LIMITER",
+      "namespace_id": "83017",
+      "simple": {
+        "limit": 10,
+        "period": 60
+      }
+    },
+
+    {
+      "name": "AI_NETWORK_RATE_LIMITER",
+      "namespace_id": "83018",
+      "simple": {
+        "limit": 100,
+        "period": 60
+      }
+    }
+  ]
+}

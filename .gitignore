@@ -39,3 +39,9 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Private local environment
+.env
+
+# Local environment backup
+.env.save
