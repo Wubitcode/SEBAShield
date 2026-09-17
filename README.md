@@ -1,396 +1,221 @@
-# 🛡️ SEBAShield
+SEBAShield
+Detect. Analyze. Protect. Educate.
+SEBAShield is a React Native + Expo mobile cybersecurity application for analyzing suspicious messages, links, and job offers. The app runs natively both  on iOS and Android from a single React Native codebase.
+The app combines deterministic local analysis with optional AI-assisted analysis. The local rules engine remains the primary baseline; AI provides supplemental context and does not replace the local result.
+Features
+•	Message scam analysis
+•	Link / URL checking
+•	Fake-job detection
+•	Deterministic local scoring and risk classification
+•	Optional AI-assisted analysis
+•	Encrypted device-local scan history
+•	Firebase anonymous authentication
+•	Email/password accounts
+•	Anonymous-to-email account upgrade
+•	Email verification and password reset
+•	Privacy-minimized Firestore synchronization
+•	Metadata-only cloud history recovery after sign-in
+•	Individual scan deletion
+•	Clear-all scan history
+•	Settings and account-management controls
+Technology
+Mobile application
+•	React Native
+•	Expo
+•	React Navigation
+•	JavaScript
+•	Firebase Authentication
+•	Cloud Firestore
+•	Expo SecureStore
+•	Expo Crypto
+AI backend
+•	Cloudflare Workers
+•	Workers AI
+•	TypeScript
+•	Vitest
+•	Firebase ID-token verification
+•	User and network rate limiting
+Architecture
+SEBAShield uses a feature-oriented structure.
+SEBAShield/
+├── App.js
+├── index.js
+├── app.json
+├── assets/
+├── docs/
+│   ├── FirebaseStructure.md
+│   ├── PrivacyModel.md
+│   ├── Roadmap.md
+│   └── Wireframes.md
+├── ai-backend/
+│   ├── src/
+│   ├── test/
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── wrangler.jsonc
+└── src/
+    ├── app/
+    │   ├── config/
+    │   ├── navigation/
+    │   └── providers/
+    ├── features/
+    │   ├── aiAnalysis/
+    │   ├── alerts/
+    │   ├── authentication/
+    │   ├── communityReports/
+    │   ├── history/
+    │   ├── scanning/
+    │   ├── settings/
+    │   └── threatIntelligence/
+    ├── infrastructure/
+    │   ├── firebase/
+    │   ├── logging/
+    │   ├── networking/
+    │   ├── security/
+    │   └── storage/
+    └── shared/
+        ├── components/
+        ├── constants/
+        ├── errors/
+        ├── styles/
+        └── utils/
+See src/README.md for architecture details.
+Privacy and Data Handling
+SEBAShield intentionally separates rich local scan data from reduced cloud metadata.
+Local history
+The device-local history can contain the submitted message, URL, or job text and the complete local analysis required by the UI.
+Local history is encrypted before persistence using AES-256-GCM. The local encryption key is stored separately with Expo SecureStore. Android application backup is disabled.
+Firestore
+Firestore stores a reduced representation of a scan rather than the complete local scan record.
+The cloud record is designed to contain fields such as:
+•	scan ID
+•	Firebase owner UID
+•	scan type
+•	score
+•	risk level
+•	normalized indicator codes
+•	analyzer/schema version
+•	timestamps
+The cloud representation intentionally excludes raw submitted content, local content previews, free-text recommendations, free-text indicator descriptions, AI summaries, AI explanations, and local encryption material.
+Cloud history recovery
+When an email-account user signs out, the device-local raw scan history is cleared.
+When the user signs back into the same Firebase account, SEBAShield can retrieve that account's Firestore metadata and display metadata-only Cloud Record entries.
+Raw submitted content is not reconstructed from Firestore.
+AI analysis
+When optional AI analysis is requested, the submitted content is transmitted to the configured authenticated AI backend for that inference request.
+SEBAShield does not intentionally persist raw submitted content or raw AI request content in Firestore.
+For a more detailed engineering description, see docs/PrivacyModel.md.
+Authentication
+Supported Firebase Authentication workflows include:
+•	anonymous authentication
+•	email/password account creation
+•	upgrading an anonymous identity to email/password
+•	email/password sign-in
+•	email verification
+•	password reset
+•	sign-out
+Cloud scan ownership is based on the authenticated Firebase UID.
+History Deletion
+SEBAShield uses a cloud-first deletion strategy when authentication is available.
+For an individual scan:
+1.	Verify the current Firebase identity.
+2.	Delete the matching Firestore scan document.
+3.	Delete the encrypted local copy if one exists.
+4.	Refresh the combined history view.
+For Clear Scan History:
+1.	Verify Firebase Authentication.
+2.	Retrieve the current user's Firestore scans.
+3.	Delete the cloud scan documents.
+4.	Clear encrypted local history and its local key.
+5.	Reset in-memory history state.
+This prevents the app from reporting permanent deletion while a cloud record is known to remain.
+Environment Configuration
+Copy .env.example to a local .env file and provide the required environment values. Never commit the populated .env file.
+Do not commit:
+•	.env
+•	.env.save
+•	Firebase service-account keys
+•	Cloudflare secrets
+•	private credentials or tokens
+Client-side Firebase web configuration is not treated as an authorization mechanism. Access control depends on Firebase Authentication and Firestore Security Rules.
+Run the Mobile App
+npm install
+npx expo start -c
 
-### Secure • Educate • Block • Analyze
+Export Validation Checks
 
-**Protect • Detect • Educate**
-
-## 📱 Mobile Capstone Project
-
-**SEBAShield** is a cross-platform cybersecurity mobile application designed to help users identify, analyze, and understand suspicious online content before financial or personal harm occurs.
-
-The application currently provides rule-based scam detection for suspicious messages by examining common indicators such as urgency, credential requests, financial requests, suspicious links, fake employment language, and emotional pressure tactics.
-
-SEBAShield is being developed with **React Native** and **Expo** for both iOS and Android. Firebase and Firestore integration are planned for later phases of the project.
-
-
-# Project Objectives
-
-The primary objectives of SEBAShield are to:
-
-* Detect suspicious messages and common scam attempts
-* Analyze phishing links and unsafe domains
-* Identify fraudulent job offers
-* Calculate an understandable threat score
-* Classify content as Safe, Suspicious, or High Risk
-* Explain why submitted content may be dangerous
-* Improve cybersecurity awareness
-* Help users make safer online decisions
-
-
-
-# Problem Being Solved
-
-Cybercriminals commonly use:
-
-* Phishing emails
-* Scam text messages
-* Fake job offers
-* Malicious websites
-* Credential-harvesting messages
-* Financial manipulation
-* Identity impersonation
-* Social engineering tactics
-
-Many users cannot easily determine whether a message or link is legitimate.
-
-SEBAShield addresses this problem by analyzing submitted content, identifying recognizable scam indicators, assigning a threat score, and presenting the findings in clear language.
-
-✅ Current Features
-
-# Message Scanner
-
-Users can enter or paste suspicious content such as:
-
-* SMS messages
-* Emails
-* Social media messages
-* Job offers
-* General scam messages
-
-### Rule-Based Scam Analyzer
-
-The current detection engine checks content against organized threat-pattern categories.
-
-# Threat Scoring System
-
-The application calculates a score between `0` and `100`.
-
-| Score  | Classification |
-| ------ | -------------- |
-| 0–29   | 🟢 Safe        |
-| 30–69  | 🟡 Suspicious  |
-| 70–100 | 🔴 High Risk   |
-
-# Explainable Threat Results
-
-The Result Screen displays:
-
-* Threat score
-* Risk classification
-* Detected scam indicators
-* Original submitted message
-
-# Input Validation
-
-The application prevents users from submitting an empty message for analysis.
-
-# Cross-Platform Navigation
-
-React Navigation manages movement between the Home, Scanner, and Result screens.
-
-
-# Current Threat-Detection Categories
-
-The application currently analyzes content for:
-
-* Urgency language
-* Credential requests
-* Banking and financial requests
-* Suspicious links
-* Shortened URL patterns
-* Unusual domain extensions
-* Fake employment language
-* Unrealistic income claims
-* Emotional pressure
-* Prize and reward manipulation
-* Account suspension or verification language
-
-
-# Detection Workflow
-
-
-User submits a suspicious message
-                │
-                ▼
-        ScannerScreen.js
-                │
-                ▼
-        scamAnalyzer.js
-                │
-       ┌────────┼────────┐
-       ▼        ▼        ▼
-Threat patterns     Scoring rules
-       │                 │
-       └────────┬────────┘
-                ▼
-     Risk score and classification
-                │
-                ▼
-         ResultScreen.js
-
-
-# Technology Stack
-
-| Technology       | Purpose                                     |
-|                  | ------------------------------------------- |
-| React Native     | Cross-platform mobile development           |
-| Expo             | Development, testing, and simulator support |
-| JavaScript       | Application and detection logic             |
-| React Navigation | Screen navigation                           |
-| Xcode            | iOS Simulator testing                       |
-| Android Studio   | Planned Android emulator testing            |
-| Firebase         | Planned backend services                    |
-| Firestore        | Planned scan-history storage                |
-| Git and GitHub   | Version control and project management      |
-
-
-
-## 📂 Project Structure
-
+npx expo export --platform ios --output-dir /tmp/sebashield-ios-final
+npx expo export --platform android --output-dir /tmp/sebashield-android-final
+AI Backend Validation
+Run backend checks from the backend directory:
+cd ai-backend
+npx tsc --noEmit
+npm test -- --run
+The backend tests cover health and important request-rejection behavior. Additional integration and security tests remain appropriate future work.
+Security Notes
+Current defensive controls include:
+•	encrypted local history
+•	SecureStore key storage
+•	Android backup disabled
+•	UID-scoped Firestore access
+•	minimized Firestore schema
+•	Firebase ID-token verification on the AI backend
+•	request validation
+•	user rate limiting
+•	network rate limiting
+•	no-store response headers for AI responses
+•	cloud-first deletion behavior
+These controls are engineering safeguards, not a formal security certification or guarantee.
+Limitations
+SEBAShield is a capstone application.
+A Safe or low-risk result does not prove that content is trustworthy. Automated and AI-assisted results can be incomplete or incorrect.
+Users should independently verify suspicious links, employers, payment requests, account-security messages, and other high-impact situations.
+Documentation
+•	docs/FirebaseStructure.md — Firestore structure, ownership, synchronization, and deletion
+•	docs/PrivacyModel.md — local/cloud/AI data flows and retention
+•	docs/Roadmap.md — implemented scope and future work
+•	docs/Wireframes.md — screen and navigation flows
+•	src/README.md — source-code architecture
 
 SEBAShield/
 │
-├── App.js
-├── app.json
-├── index.js
-├── package.json
-├── package-lock.json
 ├── README.md
-├── AIReflection.md
-├── .gitignore
+│   → Whole project overview
 │
-├── app/
-│   ├── screens/
-│   │   ├── HomeScreen.js
-│   │   ├── ScannerScreen.js
-│   │   ├── ResultScreen.js
-│   │   ├── LinkCheckerScreen.js
-│   │   ├── FakeJobScreen.js
-│   │   ├── HistoryScreen.js
-│   │   └── SettingsScreen.js
-│   │
-│   ├── components/
-│   │   ├── Header.js
-│   │   ├── CustomButton.js
-│   │   ├── ScanInput.js
-│   │   ├── RiskCard.js
-│   │   └── ThreatIndicator.js
-│   │
-│   └── constants/
-│       ├── colors.js
-│       ├── typography.js
-│       └── appConfig.js
+├── src/
+│   └── README.md
+│       → Source-code architecture
 │
-├── navigation/
-│   └── AppNavigator.js
-│
-├── services/
-│   ├── scamAnalyzer.js
-│   ├── linkChecker.js
-│   └── firebaseService.js
-│
-├── utils/
-│   ├── scoringSystem.js
-│   ├── threatPatterns.js
-│   └── helperFunctions.js
-│
-├── firebase/
-│   └── firebaseConfig.js
-│
-├── context/
-│   └── ScanContext.js
-│
-├── styles/
-│   └── globalStyles.js
-│
-├── docs/
-│   ├── Wireframes.md
-│   └── Architecture.md
-│
-└── assets/
-    ├── images/
-    │   └── sebashield-logo.png
-    ├── icons/
-    └── fonts/
-
-
-Some files are currently placeholders and will be implemented during later development phases.
-
-
-# Application Screens
-
-# Home Screen
-
-The primary dashboard that displays the SEBAShield brand and provides access to application features.
-
-# Scanner Screen
-
-Allows users to enter or paste suspicious messages for analysis.
-
-# Result Screen
-
-Displays the calculated threat score, risk classification, detected indicators, and submitted message.
-
-# Link Checker Screen
-
-Planned feature for evaluating suspicious URLs and domains.
-
-# Fake Job Detector Screen
-
-Planned feature for detecting employment and recruitment scams.
-
-# History Screen
-
-Planned feature for reviewing previous analyses stored with Firebase Firestore.
-
-# Settings Screen
-
-Planned feature for managing application preferences.
-
-# Running the Project
-
-# Prerequisites
-
-Install the following:
-
-* Node.js
-* npm
-* Expo
-* Xcode for iOS testing
-* Android Studio for Android testing
-
-#Install Dependencies
-
-bash
-npm install
-
-
-# Start Expo
-
-bash
-npx expo start
-
-
-# Start with a Cleared Cache
-
-bash
-npx expo start -c
-
-
-# Open the iOS Simulator
-
-After Expo starts, press:
-
-text
-i
-
-
-# Run with the npm Script
-
-bash
-npm run ios
-
-
-# Test Messages
-
-### High-Risk Test
-
-text
-URGENT: Your bank account has been suspended. Click http://secure-bank-login.com immediately to verify your identity, password, and verification code.
-
-
-Expected result:
-
-* High threat score
-* High Risk classification
-* Urgency indicator
-* Suspicious-link indicator
-* Credential-request indicator
-* Financial-scam indicator
-
-# Safe Test
-
-text
-Hello, this is a reminder that your appointment is scheduled for Friday at 2:00 PM. Please call the office if you need to reschedule.
-
-
-Expected result:
-
-* Low threat score
-* Safe classification
-* No major scam indicators
-
-
-## 🗓️ Development Roadmap
-
-| Week   | Milestone                                           | Status     |
-| ------ | --------------------------------------------------- | ---------- |
-| Week 1 | Project Architecture and Detailed Scaffolding       | ✅ Complete |
-| Week 2 | Core Scam Detection Engine                          | ✅ Complete |
-| Week 3 | Advanced Link Checker                               | ⏳ Next     |
-| Week 4 | Fake Job Detector                                   | Planned    |
-| Week 5 | Firebase and Scan History                           | Planned    |
-| Week 6 | AI-Assisted Scam Analysis                           | Planned    |
-| Week 7 | Testing, UI Polish, Documentation, and Presentation | Planned    |
-
-
-
-##  Future Enhancements
-
-Planned future capabilities include:
-
-* Advanced URL analysis
-* Real-time URL-reputation services
-* Fake job detection
-* Firebase authentication
-* Firestore scan history
-* OCR screenshot analysis
-* QR code scanning
-* Scam phone-number reporting
-* Community threat reporting
-* AI-assisted threat explanations
-* Personalized cybersecurity recommendations
-* Cybersecurity education center
-
-
-## 🎓 Learning Outcomes
-
-This project strengthens practical skills in:
-
-* React Native development
-* Cross-platform mobile application design
-* JavaScript
-* React Navigation
-* Modular software architecture
-* Rule-based detection systems
-* Cybersecurity analysis
-* User-interface design
-* Git and GitHub
-* Testing and debugging
-* Firebase integration
-
-
-
-## ⚠️ Disclaimer
-
-SEBAShield is an educational mobile capstone project and an early-stage prototype.
-
-The application provides risk indicators based on rule-based pattern matching. It should not be treated as a guaranteed determination that content is safe or malicious. Users should independently verify suspicious communications and avoid sharing sensitive personal or financial information.
-
-# 👩‍💻 Author
-
-Wubit 
-
-Mobile and Web Development using AI Student
-Computer Networking and Cybersecurity Engineering Graduate
-
-
-Project:SEBAShield Mobile Capstone
-Year: 2026
-
-
-
-## 📄 License
-
-This project is currently developed for educational and portfolio purposes as part of a Mobile Capstone Project.
-Mobile and Web Development using AI Student
+└── docs/
+    ├── PrivacyModel.md
+    │   → Privacy and data flow
+    │
+    ├── FirebaseStructure.md
+    │   → Firebase / Firestore design
+    │
+    ├── Roadmap.md
+    │   → Current and future development
+    │
+    └── Wireframes.md
+        → Screen and navigation design
+
+## Screenshots
+
+### Home Screen
+![Home Screen](screenshots/home.png)
+
+### AI Link Analysis
+![AI Link Analysis](screenshots/ai-link-analysis.png)
+
+### Settings and Account
+![Settings and Account](screenshots/settings-account.png)
+
+### Scan History
+![Scan History](screenshots/scan-history.png)
+
+### Fake Job Guidance
+![Fake Job Guidance](screenshots/fake-job-guidance.png)
+
+Author
+Wubit
+Mobile Web Development Capstone Project
