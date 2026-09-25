@@ -240,6 +240,10 @@ SEBAShield/
     └── Wireframes.md
         → Screen and navigation design
 
+ ## Demo Video
+
+[Watch or download the SEBAShield Mobile App Demo](demo-video/SEBAShield_Mobile_App_Demo.mp4)
+
 ## Screenshots
 
 ### Home Screen
